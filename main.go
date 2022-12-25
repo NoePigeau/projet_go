@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"os"
-	"project-go/product"
 	"project-go/routes"
 
 	"github.com/gin-gonic/gin"
@@ -22,10 +21,8 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	db.AutoMigrate(&product.Product{})
-
 	r := gin.Default()
-	routes.GetRoutes(r, db)
+	routes.InitRoutes(r, db)
 
 	r.Run(":3000")
 }

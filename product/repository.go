@@ -23,6 +23,10 @@ func NewRepository(db *gorm.DB) *repository {
 }
 
 func (r *repository) Create(product Product) (Product, error) {
+	productErr := r.db.Where(&Product{Name: product.Name}).First(&product).Error
+	if productErr == nil {
+		return product, errors.New("Name already used")
+	}
 	err := r.db.Create(&product).Error
 	if err != nil {
 		return product, err

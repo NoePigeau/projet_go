@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetRoutes(r *gin.Engine, db *gorm.DB) {
-	GetProductRoutes(r, db)
+func InitRoutes(r *gin.Engine, db *gorm.DB) {
+	initProductRoutes(r, db)
+	initPaymentRoutes(r, db)
 }

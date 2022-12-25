@@ -8,12 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Response struct {
-	Success bool        `json:"success"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data"`
-}
-
 type productHandler struct {
 	productService product.Service
 }
@@ -22,13 +16,7 @@ func NewProductHandler(productService product.Service) *productHandler {
 	return &productHandler{productService}
 }
 
-func (ts *productHandler) Hello(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "hello world",
-	})
-}
-
-func (th *productHandler) Store(c *gin.Context) {
+func (th *productHandler) Create(c *gin.Context) {
 	// Get json body
 	var input product.InputProduct
 	err := c.ShouldBindJSON(&input)
@@ -42,7 +30,7 @@ func (th *productHandler) Store(c *gin.Context) {
 		return
 	}
 
-	newProduct, err := th.productService.Store(input)
+	newProduct, err := th.productService.Create(input)
 	if err != nil {
 		response := &Response{
 			Success: false,
@@ -61,8 +49,8 @@ func (th *productHandler) Store(c *gin.Context) {
 	c.JSON(http.StatusCreated, response)
 }
 
-func (th *productHandler) FetchAll(c *gin.Context) {
-	products, err := th.productService.FetchAll()
+func (th *productHandler) GetAll(c *gin.Context) {
+	products, err := th.productService.GetAll()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, &Response{
 			Success: false,
@@ -78,7 +66,7 @@ func (th *productHandler) FetchAll(c *gin.Context) {
 	})
 }
 
-func (th *productHandler) FetchById(c *gin.Context) {
+func (th *productHandler) GetById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, &Response{
@@ -89,7 +77,7 @@ func (th *productHandler) FetchById(c *gin.Context) {
 		return
 	}
 
-	product, err := th.productService.FetchById(id)
+	product, err := th.productService.GetById(id)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, &Response{
 			Success: false,

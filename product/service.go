@@ -1,9 +1,9 @@
 package product
 
 type Service interface {
-	Store(input InputProduct) (Product, error)
-	FetchAll() ([]Product, error)
-	FetchById(id int) (Product, error)
+	Create(input InputProduct) (Product, error)
+	GetAll() ([]Product, error)
+	GetById(id int) (Product, error)
 	Update(id int, inputProduct InputProduct) (Product, error)
 	Delete(id int) error
 }
@@ -16,7 +16,7 @@ func NewService(r Repository) *service {
 	return &service{r}
 }
 
-func (s *service) Store(input InputProduct) (Product, error) {
+func (s *service) Create(input InputProduct) (Product, error) {
 	var product Product
 	product.Name = input.Name
 	product.Price = input.Price
@@ -29,7 +29,7 @@ func (s *service) Store(input InputProduct) (Product, error) {
 	return newProduct, nil
 }
 
-func (s *service) FetchAll() ([]Product, error) {
+func (s *service) GetAll() ([]Product, error) {
 	products, err := s.repository.GetAll()
 	if err != nil {
 		return products, err
@@ -38,7 +38,7 @@ func (s *service) FetchAll() ([]Product, error) {
 	return products, nil
 }
 
-func (s *service) FetchById(id int) (Product, error) {
+func (s *service) GetById(id int) (Product, error) {
 	product, err := s.repository.GetById(id)
 	if err != nil {
 		return product, err
