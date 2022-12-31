@@ -1,8 +1,8 @@
 package routes
 
 import (
+	"project-go/controllers/product"
 	"project-go/handler"
-	"project-go/product"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

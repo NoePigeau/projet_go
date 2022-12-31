@@ -1,7 +1,7 @@
 package payment
 
 import (
-	"project-go/product"
+	"project-go/controllers/product"
 	"time"
 )
 

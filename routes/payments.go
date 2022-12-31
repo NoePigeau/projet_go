@@ -1,8 +1,8 @@
 package routes
 
 import (
+	"project-go/controllers/payment"
 	"project-go/handler"
-	"project-go/payment"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

@@ -2,7 +2,7 @@ package handler
 
 import (
 	"net/http"
-	"project-go/payment"
+	"project-go/controllers/payment"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
