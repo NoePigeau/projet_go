@@ -8,11 +8,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func initPaymentRoutes(r *gin.Engine, db *gorm.DB) {
+func initPaymentRoutes(protected *gin.RouterGroup, db *gorm.DB) {
 
 	db.AutoMigrate(&payment.Payment{})
 
-	api := r.Group("/payment")
+	api := protected.Group("/payment")
 	paymentRepository := payment.NewRepository(db)
 	paymentService := payment.NewService(paymentRepository)
 	paymentHandler := handler.NewPaymentHandler(paymentService)

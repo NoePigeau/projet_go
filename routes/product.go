@@ -8,11 +8,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func initProductRoutes(r *gin.Engine, db *gorm.DB) {
+func initProductRoutes(protected *gin.RouterGroup, db *gorm.DB) {
 
 	db.AutoMigrate(&product.Product{})
 
-	api := r.Group("/product")
+	api := protected.Group("/product")
 	productRepository := product.NewRepository(db)
 	productService := product.NewService(productRepository)
 	productHandler := handler.NewProductHandler(productService)
