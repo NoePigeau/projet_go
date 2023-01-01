@@ -2,7 +2,7 @@ package payment
 
 import (
 	"errors"
-	"project-go/controllers/product"
+	"project-go/models/product"
 
 	"gorm.io/gorm"
 )

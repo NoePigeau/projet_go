@@ -2,14 +2,24 @@ package handler
 
 import (
 	"net/http"
-	"project-go/controllers/product"
+	"project-go/models/product"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type productHandler struct {
 	productService product.Service
+}
+
+func MigrateAndGetProduct(db *gorm.DB) (productHandler *productHandler) {
+	db.AutoMigrate(&product.Product{})
+
+	productRepository := product.NewRepository(db)
+	productService := product.NewService(productRepository)
+	productHandler = NewProductHandler(productService)
+	return
 }
 
 func NewProductHandler(productService product.Service) *productHandler {

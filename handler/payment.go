@@ -2,14 +2,24 @@ package handler
 
 import (
 	"net/http"
-	"project-go/controllers/payment"
+	"project-go/models/payment"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type paymentHandler struct {
 	paymentService payment.Service
+}
+
+func MigrateAndGetPayment(db *gorm.DB) (paymentHandler *paymentHandler) {
+	db.AutoMigrate(&payment.Payment{})
+
+	paymentRepository := payment.NewRepository(db)
+	paymentService := payment.NewService(paymentRepository)
+	paymentHandler = NewPaymentHandler(paymentService)
+	return
 }
 
 func NewPaymentHandler(paymentService payment.Service) *paymentHandler {

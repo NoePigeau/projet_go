@@ -2,14 +2,24 @@ package handler
 
 import (
 	"net/http"
-	"project-go/controllers/user"
+	"project-go/models/user"
 	"project-go/utils/token"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type userHandler struct {
 	userService user.Service
+}
+
+func MigrateAndGetUser(db *gorm.DB) (userHandler *userHandler) {
+	db.AutoMigrate(&user.User{})
+
+	userRepository := user.NewRepository(db)
+	userService := user.NewService(userRepository)
+	userHandler = NewUserHandler(userService)
+	return
 }
 
 func NewUserHandler(userService user.Service) *userHandler {

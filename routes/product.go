@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"project-go/controllers/product"
 	"project-go/handler"
 
 	"github.com/gin-gonic/gin"
@@ -10,13 +9,9 @@ import (
 
 func initProductRoutes(protected *gin.RouterGroup, db *gorm.DB) {
 
-	db.AutoMigrate(&product.Product{})
+	productHandler := handler.MigrateAndGetProduct(db)
 
 	api := protected.Group("/product")
-	productRepository := product.NewRepository(db)
-	productService := product.NewService(productRepository)
-	productHandler := handler.NewProductHandler(productService)
-
 	api.POST("/", productHandler.Create)
 	api.GET("/", productHandler.GetAll)
 	api.GET("/:id", productHandler.GetById)

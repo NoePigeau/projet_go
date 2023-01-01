@@ -10,11 +10,10 @@ import (
 func InitRoutes(r *gin.Engine, db *gorm.DB) {
 
 	public := r.Group("/api/public")
-	initUserRoutes(public, db)
-
 	protected := r.Group("/api/protected")
 	protected.Use(middlewares.JwtAuthMiddleware())
+
+	initUserRoutes(public, protected, db)
 	initProductRoutes(protected, db)
 	initPaymentRoutes(protected, db)
-
 }

@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"project-go/controllers/payment"
 	"project-go/handler"
 
 	"github.com/gin-gonic/gin"
@@ -10,13 +9,9 @@ import (
 
 func initPaymentRoutes(protected *gin.RouterGroup, db *gorm.DB) {
 
-	db.AutoMigrate(&payment.Payment{})
+	paymentHandler := handler.MigrateAndGetPayment(db)
 
 	api := protected.Group("/payment")
-	paymentRepository := payment.NewRepository(db)
-	paymentService := payment.NewService(paymentRepository)
-	paymentHandler := handler.NewPaymentHandler(paymentService)
-
 	api.POST("/", paymentHandler.Create)
 	api.GET("/", paymentHandler.GetAll)
 	api.GET("/:id", paymentHandler.GetById)

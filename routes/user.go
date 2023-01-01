@@ -1,23 +1,20 @@
 package routes
 
 import (
-	"project-go/controllers/user"
 	"project-go/handler"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
-func initUserRoutes(public *gin.RouterGroup, db *gorm.DB) {
+func initUserRoutes(public *gin.RouterGroup, protected *gin.RouterGroup, db *gorm.DB) {
 
-	db.AutoMigrate(&user.User{})
+	userHandler := handler.MigrateAndGetUser(db)
 
 	api := public.Group("/user")
-	userRepository := user.NewRepository(db)
-	userService := user.NewService(userRepository)
-	userHandler := handler.NewUserHandler(userService)
-
 	api.POST("/register", userHandler.Register)
 	api.POST("/login", userHandler.Login)
+
+	api = protected.Group("/user")
 	api.GET("/current", userHandler.CurrentUser)
 }
