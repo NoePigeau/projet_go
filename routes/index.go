@@ -15,5 +15,5 @@ func InitRoutes(r *gin.Engine, db *gorm.DB) {
 
 	initUserRoutes(public, protected, db)
 	initProductRoutes(protected, db)
-	initPaymentRoutes(protected, db)
+	initPaymentRoutes(public, protected, db)
 }
