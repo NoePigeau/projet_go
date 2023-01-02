@@ -1,8 +1,10 @@
 package handler
 
 import (
+	"io"
 	"net/http"
 	"project-go/models/payment"
+	broadcast "project-go/utils/broadcaster"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -51,6 +53,9 @@ func (th *paymentHandler) Create(c *gin.Context) {
 		return
 	}
 
+	broadcaster := broadcast.GetBroadcaster()
+	broadcaster.Submit(newPayment)
+
 	response := &Response{
 		Success: true,
 		Message: "New payment created",
@@ -73,6 +78,25 @@ func (th *paymentHandler) GetAll(c *gin.Context) {
 	c.JSON(http.StatusOK, &Response{
 		Success: true,
 		Data:    payments,
+	})
+}
+
+func (th *paymentHandler) GetAllByStream(c *gin.Context) {
+	var listener = make(chan interface{})
+	broadcaster := broadcast.GetBroadcaster()
+	broadcaster.Register(listener)
+
+	defer broadcaster.Unregister(listener)
+
+	clientGone := c.Request.Context().Done()
+	c.Stream(func(w io.Writer) bool {
+		select {
+		case <-clientGone:
+			return false
+		case message := <-listener:
+			c.SSEvent("message", message)
+			return true
+		}
 	})
 }
 
@@ -137,6 +161,9 @@ func (th *paymentHandler) Update(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
+
+	broadcaster := broadcast.GetBroadcaster()
+	broadcaster.Submit(uPayment)
 
 	response := &Response{
 		Success: true,
