@@ -26,6 +26,17 @@ func NewUserHandler(userService user.Service) *userHandler {
 	return &userHandler{userService}
 }
 
+// Register godoc
+//
+//	@Summary	Register a user
+//	@Tags		user
+//	@Accept		json
+//	@Produce	json
+//	@Param		userInput	body		user.InputUser	true	"Message body"
+//	@Success	201			{object}	user.User
+//	@Failure	400			{object}	Response
+//	@Failure	401			{object}	Response
+//	@Router		/public/user/register [post]
 func (th *userHandler) Register(c *gin.Context) {
 	var input user.InputUser
 	err := c.ShouldBindJSON(&input)
@@ -43,7 +54,7 @@ func (th *userHandler) Register(c *gin.Context) {
 	if err != nil {
 		response := &Response{
 			Success: false,
-			Message: "Something went wrong",
+			Message: "Error: Something went wrong",
 			Data:    err.Error(),
 		}
 		c.JSON(http.StatusBadRequest, response)
@@ -58,6 +69,17 @@ func (th *userHandler) Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, response)
 }
 
+// Login godoc
+//
+//	@Summary	Login a user
+//	@Tags		user
+//	@Accept		json
+//	@Produce	json
+//	@Param		userInput	body		user.InputUser	true	"Message body"
+//	@Success	200			{object}	Response
+//	@Failure	400			{object}	Response
+//	@Failure	401			{object}	Response
+//	@Router		/public/user/login [post]
 func (th *userHandler) Login(c *gin.Context) {
 	var input user.InputUser
 	err := c.ShouldBindJSON(&input)
@@ -90,6 +112,18 @@ func (th *userHandler) Login(c *gin.Context) {
 	c.JSON(http.StatusCreated, response)
 }
 
+// Current godoc
+//
+//	@Summary	Get current user
+//	@Tags		user
+//	@Accept		json
+//	@Produce	json
+//	@Success	200	{object}	Response
+//	@Failure	400	{object}	Response
+//	@Failure	401	{object}	Response
+//	@Router		/protected/user/current [get]
+//
+//	@Security	BearerAuth
 func (th *userHandler) CurrentUser(c *gin.Context) {
 
 	userId, err := token.ExtractTokenID(c)
