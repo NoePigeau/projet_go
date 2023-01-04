@@ -171,10 +171,11 @@ func (th *paymentHandler) GetById(c *gin.Context) {
 //	@Tags		payment
 //	@Accept		json
 //	@Produce	json
-//	@Param		id	path		int	true	"Payment ID"
-//	@Success	201	{object}	Response
-//	@Failure	400	{object}	Response
-//	@Failure	401	{object}	Response
+//	@Param		id				path		int						true	"Payment ID"
+//	@Param		paymentInput	body		payment.InputPayment	true	"Payment body"
+//	@Success	201				{object}	Response
+//	@Failure	400				{object}	Response
+//	@Failure	401				{object}	Response
 //	@Router		/protected/payment/{id} [put]
 //
 //	@Security	BearerAuth

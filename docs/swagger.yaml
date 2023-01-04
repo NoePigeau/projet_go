@@ -217,6 +217,12 @@ paths:
         name: id
         required: true
         type: integer
+      - description: Payment body
+        in: body
+        name: paymentInput
+        required: true
+        schema:
+          $ref: '#/definitions/payment.InputPayment'
       produces:
       - application/json
       responses:
@@ -361,6 +367,12 @@ paths:
         name: id
         required: true
         type: integer
+      - description: Product body
+        in: body
+        name: productInput
+        required: true
+        schema:
+          $ref: '#/definitions/product.InputProduct'
       produces:
       - application/json
       responses:
