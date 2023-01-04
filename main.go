@@ -14,6 +14,8 @@ import (
 
 	pb "project-go/utils/grpc"
 
+	_ "project-go/docs"
+
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
