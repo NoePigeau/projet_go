@@ -28,6 +28,19 @@ func NewPaymentHandler(paymentService payment.Service) *paymentHandler {
 	return &paymentHandler{paymentService}
 }
 
+// Create godoc
+//
+//	@Summary	Create a payment
+//	@Tags		payment
+//	@Accept		json
+//	@Produce	json
+//	@Param		paymentInput	body		payment.InputPayment	true	"Message body"
+//	@Success	201				{object}	payment.Payment
+//	@Failure	400				{object}	Response
+//	@Failure	401				{object}	Response
+//	@Router		/protected/payment [post]
+//
+//	@Security	BearerAuth
 func (th *paymentHandler) Create(c *gin.Context) {
 	// Get json body
 	var input payment.InputPayment
@@ -46,7 +59,7 @@ func (th *paymentHandler) Create(c *gin.Context) {
 	if err != nil {
 		response := &Response{
 			Success: false,
-			Message: "Something went wrong",
+			Message: "Error: Something went wrong",
 			Data:    err.Error(),
 		}
 		c.JSON(http.StatusBadRequest, response)
@@ -64,12 +77,24 @@ func (th *paymentHandler) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, response)
 }
 
+// GetAll godoc
+//
+//	@Summary	Get all payment
+//	@Tags		payment
+//	@Accept		json
+//	@Produce	json
+//	@Success	200	{array}		payment.Payment
+//	@Failure	400	{object}	Response
+//	@Failure	401	{object}	Response
+//	@Router		/protected/payment [get]
+//
+//	@Security	BearerAuth
 func (th *paymentHandler) GetAll(c *gin.Context) {
 	payments, err := th.paymentService.GetAll()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, &Response{
 			Success: false,
-			Message: "Something went wrong",
+			Message: "Error: Something went wrong",
 			Data:    err.Error(),
 		})
 		return
@@ -100,6 +125,19 @@ func (th *paymentHandler) GetAllByStream(c *gin.Context) {
 	})
 }
 
+// GetById godoc
+//
+//	@Summary	Get payment by ID
+//	@Tags		payment
+//	@Accept		json
+//	@Produce	json
+//	@Param		id	path		int	true	"Payment ID"
+//	@Success	200	{object}	Response
+//	@Failure	400	{object}	Response
+//	@Failure	401	{object}	Response
+//	@Router		/protected/payment/{id} [get]
+//
+//	@Security	BearerAuth
 func (th *paymentHandler) GetById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -115,7 +153,7 @@ func (th *paymentHandler) GetById(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, &Response{
 			Success: false,
-			Message: "Something went wrong",
+			Message: "Payment not found",
 			Data:    err.Error(),
 		})
 		return
@@ -127,6 +165,19 @@ func (th *paymentHandler) GetById(c *gin.Context) {
 	})
 }
 
+// Update by id godoc
+//
+//	@Summary	Update payment by ID
+//	@Tags		payment
+//	@Accept		json
+//	@Produce	json
+//	@Param		id	path		int	true	"Payment ID"
+//	@Success	201	{object}	Response
+//	@Failure	400	{object}	Response
+//	@Failure	401	{object}	Response
+//	@Router		/protected/payment/{id} [put]
+//
+//	@Security	BearerAuth
 func (th *paymentHandler) Update(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -155,7 +206,7 @@ func (th *paymentHandler) Update(c *gin.Context) {
 	if err != nil {
 		response := &Response{
 			Success: false,
-			Message: "Something went wrong",
+			Message: "Error: Something went wrong",
 			Data:    err.Error(),
 		}
 		c.JSON(http.StatusBadRequest, response)
@@ -173,6 +224,19 @@ func (th *paymentHandler) Update(c *gin.Context) {
 	c.JSON(http.StatusCreated, response)
 }
 
+// Delete by id godoc
+//
+//	@Summary	Delete payment by ID
+//	@Tags		payment
+//	@Accept		json
+//	@Produce	json
+//	@Param		id	path		int	true	"Payment ID"
+//	@Success	200	{object}	Response
+//	@Failure	400	{object}	Response
+//	@Failure	401	{object}	Response
+//	@Router		/protected/payment/{id} [delete]
+//
+//	@Security	BearerAuth
 func (th *paymentHandler) Delete(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -188,7 +252,7 @@ func (th *paymentHandler) Delete(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, &Response{
 			Success: false,
-			Message: "Something went wrong",
+			Message: "Error: Something went wrong",
 			Data:    err.Error(),
 		})
 		return

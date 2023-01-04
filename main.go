@@ -13,7 +13,29 @@ import (
 	"gorm.io/gorm"
 
 	pb "project-go/utils/grpc"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
+
+//	@title			GO Project
+//	@version		1.0
+//	@description	this is the go project.
+//	@termsOfService	http://swagger.io/terms/
+
+//	@contact.name	API Support
+//	@contact.url	http://www.swagger.io/support
+//	@contact.email	support@swagger.io
+
+//	@license.name	Apache 2.0
+//	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
+
+//	@host						localhost:3000
+//	@BasePath					/api
+//
+//	@securityDefinitions.apikey	BearerAuth
+//	@in							header
+//	@name						Authorization
 
 func gcrpServerRun(db *gorm.DB) {
 	grpcListener, _ := net.Listen("tcp", ":5000")
@@ -46,6 +68,7 @@ func main() {
 	routes.InitRoutes(r, db)
 
 	go gcrpServerRun(db)
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run(":3000")
 
 }
