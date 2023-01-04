@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option go_package = "project-go/utils/grpc";
+
+package grpc;
+
+service GRPC {
+	rpc CreateProduct (CreateProductRequest) returns (CreateProductReply) {}
+}
+  
+message CreateProductRequest {
+	string name = 1;
+	int32 price = 2;
+}
+
+  message CreateProductReply {
+	int32 ID = 1;
+	string Name = 2;   
+	int32 Price = 3;
+	string CreatedAt  = 4;
+	string UpdatedAt  = 5;
+}
+
+
