@@ -147,10 +147,11 @@ func (th *productHandler) GetById(c *gin.Context) {
 //	@Tags		product
 //	@Accept		json
 //	@Produce	json
-//	@Param		id	path		int	true	"Product ID"
-//	@Success	200	{object}	Response
-//	@Failure	400	{object}	Response
-//	@Failure	401	{object}	Response
+//	@Param		id				path		int						true	"Product ID"
+//	@Param		productInput	body		product.InputProduct	true	"Product body"
+//	@Success	200				{object}	Response
+//	@Failure	400				{object}	Response
+//	@Failure	401				{object}	Response
 //	@Router		/protected/product/{id} [put]
 //
 //	@Security	BearerAuth

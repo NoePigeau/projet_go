@@ -185,6 +185,15 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "Payment body",
+                        "name": "paymentInput",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/payment.InputPayment"
+                        }
                     }
                 ],
                 "responses": {
@@ -415,6 +424,15 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "Product body",
+                        "name": "productInput",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/product.InputProduct"
+                        }
                     }
                 ],
                 "responses": {
