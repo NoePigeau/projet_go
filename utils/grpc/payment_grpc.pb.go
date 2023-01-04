@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GRPCClient interface {
 	CreateProduct(ctx context.Context, in *CreateProductRequest, opts ...grpc.CallOption) (*CreateProductReply, error)
+	CreatePayment(ctx context.Context, in *CreatePaymentRequest, opts ...grpc.CallOption) (*CreatePaymentReply, error)
 }
 
 type gRPCClient struct {
@@ -42,11 +43,21 @@ func (c *gRPCClient) CreateProduct(ctx context.Context, in *CreateProductRequest
 	return out, nil
 }
 
+func (c *gRPCClient) CreatePayment(ctx context.Context, in *CreatePaymentRequest, opts ...grpc.CallOption) (*CreatePaymentReply, error) {
+	out := new(CreatePaymentReply)
+	err := c.cc.Invoke(ctx, "/grpc.GRPC/CreatePayment", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GRPCServer is the server API for GRPC service.
 // All implementations must embed UnimplementedGRPCServer
 // for forward compatibility
 type GRPCServer interface {
 	CreateProduct(context.Context, *CreateProductRequest) (*CreateProductReply, error)
+	CreatePayment(context.Context, *CreatePaymentRequest) (*CreatePaymentReply, error)
 	mustEmbedUnimplementedGRPCServer()
 }
 
@@ -55,8 +66,10 @@ type UnimplementedGRPCServer struct {
 }
 
 func (UnimplementedGRPCServer) CreateProduct(context.Context, *CreateProductRequest) (*CreateProductReply, error) {
-	
 	return nil, status.Errorf(codes.Unimplemented, "method CreateProduct not implemented")
+}
+func (UnimplementedGRPCServer) CreatePayment(context.Context, *CreatePaymentRequest) (*CreatePaymentReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePayment not implemented")
 }
 func (UnimplementedGRPCServer) mustEmbedUnimplementedGRPCServer() {}
 
@@ -89,6 +102,24 @@ func _GRPC_CreateProduct_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GRPC_CreatePayment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreatePaymentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GRPCServer).CreatePayment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpc.GRPC/CreatePayment",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GRPCServer).CreatePayment(ctx, req.(*CreatePaymentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // GRPC_ServiceDesc is the grpc.ServiceDesc for GRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -99,6 +130,10 @@ var GRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateProduct",
 			Handler:    _GRPC_CreateProduct_Handler,
+		},
+		{
+			MethodName: "CreatePayment",
+			Handler:    _GRPC_CreatePayment_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

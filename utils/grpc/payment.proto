@@ -6,6 +6,7 @@ package grpc;
 
 service GRPC {
 	rpc CreateProduct (CreateProductRequest) returns (CreateProductReply) {}
+	rpc CreatePayment (CreatePaymentRequest) returns (CreatePaymentReply) {}
 }
   
 message CreateProductRequest {
@@ -21,4 +22,16 @@ message CreateProductRequest {
 	string UpdatedAt  = 5;
 }
 
+message CreatePaymentRequest {
+	int32 ProductID = 1;
+	int32 PricePaid = 2;
+}
+
+  message CreatePaymentReply {
+	int32 ID = 1;
+	int32 PricePaid = 2;
+	int32 ProductID = 3;   
+	string CreatedAt  = 4;
+	string UpdatedAt  = 5;
+}
 
